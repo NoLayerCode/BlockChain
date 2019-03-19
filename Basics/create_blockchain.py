@@ -27,8 +27,20 @@ class Blockchain:
     def get_prev_block():
         return self.chain(-1)
     
-    def proof_of_work(self, prev_hash):
+    def proof_of_work(self, prev_proof):
         new_proof = 1
         check_proof = false
         while check_proof is False:
+            hash_operation = hashlib.sha256(str(new_proof**2 - prev_proof**2).encode()).hexdigest()
+            if hash_operation[:4] == '0000':
+                check_proof = true
+            else:
+                new_proof += 1
+        return new_proof
+    
+    def hash(self, block):
+        encoded_block = json.dumps(block, sort_keys = True).encode()
+        return hashlib.sha256(encoded_block).hexdigest()
+            
+            
             

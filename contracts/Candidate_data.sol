@@ -18,19 +18,18 @@ contract Candidate_data{
         string election_party;
     }
 
-    // Election e = new Election();
-    // mapping (uint => e.Ele) public election_objects;
-
     mapping (uint =>Candidate) public Candidates;
     mapping (uint =>Election_candidate) public Election_candidates;
 
     uint public Candidate_count;
-    //uint public count_of_vote;
 
-    function addCandidate(string memory _cand,uint _age,string memory _gender,string memory _address,string memory _email, uint _proofid,string memory _elect_city,string memory _elect_state,string memory _elect_party) public{
-        
-        Candidates[Candidate_count]= Candidate(Candidate_count,_cand,_age,_gender,_address,_email,_proofid,0);
-        Election_candidates[Candidate_count] = Election_candidate(_elect_city,_elect_state,_elect_party); 
+    function addCandidate(string memory _cand,uint _age,
+    string memory _gender,string memory _address,string memory _email, uint _proofid,string memory _elect_city,string memory _elect_state,string memory _elect_party) public{
+
+        Candidates[Candidate_count] = Candidate(Candidate_count,_cand,
+        _age,_gender,_address,_email,_proofid,0);
+        Election_candidates[Candidate_count] = Election_candidate(_elect_city,
+        _elect_state,_elect_party);
         Candidate_count ++;
 
         // election_objects[Candidate_count] = election_objects(_cand);
@@ -46,12 +45,10 @@ contract Candidate_data{
     addCandidate("demo", 20, "M", "address", "email", 10,"sangola", "maha", "bjp");
     addCandidate("Vishwa", 20, "M", "address", "email", 10,"sangola", "maha", "bjp");
     }
-    
     /*function addVote(uint _id) public{
         Candidate memory c =Candidates[_id];
         count_of_vote=c.vote_count;
         count_of_vote =count_of_vote+1;
         c.vote_count=count_of_vote;
     }*/
-   
 }

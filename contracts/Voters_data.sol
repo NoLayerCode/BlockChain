@@ -16,7 +16,8 @@ contract Voters_data {
 
     uint public voter_count;
 
-    function addVoter(string memory _name,uint _age,string memory _gender,string memory _address,string memory _password,uint _electionid,string memory _adhar) public{
+    function addVoter(string memory _name,uint _age,string memory _gender,
+    string memory _address,string memory _password,uint _electionid,string memory _adhar) public{
         voter_count++;
         Voters[voter_count] = Voter(voter_count,_name, _electionid, _age, _gender, _password, _address, _adhar);
     }

@@ -14,5 +14,9 @@
     "license": "ISC",
     "devDependencies": {
         "lite-server": "^2.3.0"
+    },
+    "dependencies": {
+        "crypto": "^1.0.1",
+        "random-words": "^1.1.0"
     }
 }

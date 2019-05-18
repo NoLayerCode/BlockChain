@@ -12,9 +12,16 @@ contract Candidate_data{
         uint vote_count;
     }
 
+    struct Candidate_event{
+        uint Id;
+        string candidate_event;
+    }
+
     mapping(address => bool) public voters;
 
     mapping (uint =>Candidate) public Candidates;
+
+    mapping (uint =>Candidate_event) public candidate_event;
 
     uint public Candidate_count;
     event votedEvent (
@@ -22,16 +29,14 @@ contract Candidate_data{
     );
 
     function addCandidate(string memory _cand, string memory _branch, string memory _gender,
-     string memory _email, string memory _year, string memory _reg_id) payable public{
-        // var _cand = candidate[0];
-        // var _branch = candidate[1];
-        // var _gender = candidate[2];
-        // var _email = candidate[3];
-        // var _year = candidate[4];
-        // var _reg_id = candidate[5];
-        Candidates[Candidate_count] = Candidate(Candidate_count,_cand, _branch, _gender, _email, _year, _reg_id,0);
+     string memory _email,  string memory _year, string memory _reg_id, string memory _event) payable public{
+        Candidates[Candidate_count] = Candidate(Candidate_count,_cand, _branch, _gender, _email, _year, _reg_id, 0);
+        candidate_event[Candidate_count] = Candidate_event(Candidate_count, _event);
         Candidate_count ++;
     }
+    // function addCandidateOther() {
+        
+    // }
 
     function vote (uint _candidateId) public {
         // require that they haven't voted before

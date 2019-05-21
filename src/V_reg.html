@@ -7,6 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>E-Voting | Dashboard</title>
     <style type="text/css">
+        /* @import "bourbon";
+         body {
+         background: #eee !important;  
+         } */
+        /*.wrapper {  
+         margin-top: 80px;
+         margin-bottom: 80px;
+         }*/
+        
         .form-signin {
             max-width: 380px;
             padding: 15px 35px 45px;
@@ -30,9 +39,10 @@
             height: auto;
             padding: 10px;
             /* @include box-sizing(border-box);
-            &:focus {
-                z-index: 2;
-            } */
+
+      &:focus {
+        z-index: 2;
+      } */
         }
         
         input[type="text"] {
@@ -376,10 +386,10 @@
                     <li class="active treeview">
                         <a href="#">
                             <i class="fa fa-address-book-o" aria-hidden="true"></i>
-                            <span>Login</span>
+                            <span>Register</span>
                             <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                     </span>
+								<i class="fa fa-angle-left pull-right"></i>
+							</span>
                         </a>
                         <ul class="treeview-menu">
                             <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i>Admin Login</a></li>
@@ -402,32 +412,53 @@
             <div class="card col-md-6" style="background-color: white; margin-top: 40px;">
                 <div class="form2">
                     <center>
-                        <h4 class="card-header">Log In</h4>
+                        <h4 class="card-header">Register</h4>
                     </center>
                     <hr>
                     <div class="card-body col-sm-12">
                         <form>
                             <div class="form-group">
-
-                                <label name="fname">Firstname</label>
-                                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="first name">
+                                <label name="fname">Name</label>
+                                <input type="text" class="form-control" id="voter_name" placeholder="name">
                             </div>
                             <div class="form-group">
 
-                                <label name="lname">Lastname</label>
-                                <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="last name">
+                                <label name="lname">Registration No</label>
+                                <input type="text" class="form-control" id="voter_reg" placeholder="Reg no">
                             </div>
+
+                            <label name="lname">Branch</label>
+                            <br>
+                            <!-- <form action="/action_page.php"> -->
+                            <select name="branch" id="voterbranch">
+								<option value="none">Select Year</option>
+								<option value="IT">Information Technology</option>
+								<option value="CSE">Computer Science</option>
+								<option value="MECH">Mechanical Engineering</option>
+								<option value="CIVIL">Civil Engineering</option>
+								<option value="TEXT">Textile Engineering</option>
+								<option value="INSTRU">Instrumentation Engineering</option>
+								<option value="EXTC">EnTC</option>
+							</select>
+                            <!-- </form> -->
+                            <br>
+                            <label name="lname">Year</label>
+                            <br>
+                            <!-- <form action="/action_page.php"> -->
+                            <select name="year" id="voteryear">
+								<option value="none">Select Year</option>
+								<option value="First Year">first year</option>
+								<option value="Second Year">Second Year</option>
+								<option value="Third Year">Third Year</option>
+								<option value="B.tech">Final year</option>
+							</select>
+                            <!-- </form> -->
+                            <br>
                             <div class="form-group">
                                 <label name="email">Email</label>
-                                <input type="email" class="form-control" id="formGroupExampleInput2" placeholder="Mail">
+                                <input type="email" class="form-control" id="voter_email" placeholder="eMail">
                             </div>
-                            <div class="form-group">
-                                <label name="votefor">vote for</label>
-                                <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="vote for">
-                            </div>
-                            <div class="form-group">
-                                <a class="btn btn-primary" href="votenow.html" role="button">Login</a>
-                            </div>
+                            <button onclick="App.onVoterReg(); return false;" id="candidateButtonId" type="button" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
                     <div class="col-sm-3"></div>
@@ -549,9 +580,9 @@
                         <h3 class="control-sidebar-heading">General Settings</h3>
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
-                        Report panel usage
-                        <input type="checkbox" class="pull-right" checked>
-                     </label>
+								Report panel usage
+								<input type="checkbox" class="pull-right" checked>
+							</label>
                             <p>
                                 Some information about this general settings option
                             </p>
@@ -559,9 +590,9 @@
                         <!-- /.form-group -->
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
-                        Allow mail redirect
-                        <input type="checkbox" class="pull-right" checked>
-                     </label>
+								Allow mail redirect
+								<input type="checkbox" class="pull-right" checked>
+							</label>
                             <p>
                                 Other sets of options are available
                             </p>
@@ -569,9 +600,9 @@
                         <!-- /.form-group -->
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
-                        Expose author name in posts
-                        <input type="checkbox" class="pull-right" checked>
-                     </label>
+								Expose author name in posts
+								<input type="checkbox" class="pull-right" checked>
+							</label>
                             <p>
                                 Allow the user to show his name in blog posts
                             </p>
@@ -580,23 +611,24 @@
                         <h3 class="control-sidebar-heading">Chat Settings</h3>
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
-                        Show me as online
-                        <input type="checkbox" class="pull-right" checked>
-                     </label>
+								Show me as online
+								<input type="checkbox" class="pull-right" checked>
+							</label>
                         </div>
                         <!-- /.form-group -->
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
-                        Turn off notifications
-                        <input type="checkbox" class="pull-right">
-                     </label>
+								Turn off notifications
+								<input type="checkbox" class="pull-right">
+							</label>
                         </div>
                         <!-- /.form-group -->
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
-                        Delete chat history
-                        <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
-                     </label>
+								Delete chat history
+								<a href="javascript:void(0)" class="text-red pull-right"><i
+										class="fa fa-trash-o"></i></a>
+							</label>
                         </div>
                         <!-- /.form-group -->
                     </form>
@@ -621,8 +653,8 @@
     <!-- Bootstrap 3.3.7 -->
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- Morris.js charts -->
-    <script src="bower_components/raphael/raphael.min.js"></script>
-    <script src="bower_components/morris.js/morris.min.js"></script>
+    <!-- <script src="bower_components/raphael/raphael.min.js"></script>
+  <script src="bower_components/morris.js/morris.min.js"></script> -->
     <!-- Sparkline -->
     <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
     <!-- jvectormap -->
@@ -644,9 +676,11 @@
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.min.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
+    <!-- <script src="dist/js/pages/dashboard.js"></script> -->
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
 </body>
 
 </html>

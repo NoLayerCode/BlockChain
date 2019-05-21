@@ -1,5 +1,5 @@
-var Voters = artifacts.require("./Voters_data.sol");
+var Candidate_data = artifacts.require("./Candidate_data.sol");
 
 module.exports = function(deployer) {
-    deployer.deploy(Voters);
+    deployer.deploy(Candidate_data);
 };

@@ -3,19 +3,14 @@ App = {
     web3Provider: null,
     contracts: {},
     accounts_address: '0x0',
+    key: {},
 
     // randomWords: require('../node_modules/random-words'),
 
 
     init: async function() {
-        console.log("init")
-
-
-        var key = new Set();
-        while (key.size < 20) {
-            key.add(this.randomString());
-        }
-        console.log(key)
+        // console.log("ini
+        this.key = new Set();
         return await App.initWeb3();
     },
 
@@ -60,12 +55,18 @@ App = {
     },
 
     randomString: function() {
-        var result = '';
+        var result;
         var length = 200;
         var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-        for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+        for (var i = length; i > 0; --i)
+            result += chars[Math.floor(Math.random() * chars.length)];
+
+        // while (this.key.size < 10) {
+        //     this.key.add(this.randomString());
+        // }
         return result;
+        // return this.key;
     },
 
     onCandidateLogin: function() {
@@ -86,31 +87,33 @@ App = {
 
         console.log(candidateName + ' ' + candidateReg_no + ' ' + candidateBranch + ' ' + candidateYear + ' ' + candidateEmail + ' ' + candidateGender + ' ' + candidateEvent);
         // console.log(this.candidate_user);
-        // App.contracts.Candidate_data.deployed().then(function(instance) {
-        //     return instance.addCandidate(candidateName, candidateBranch, candidateGender, candidateEmail, candidateYear, candidateReg_no, candidateEvent, { from: App.account, value: 2000, gas: 6721975 });
-        // }).then(function(result) {
-        //     // Wait for votes to update
-        //     console.log('pass');
-        // }).catch(function(err) {
-        //     console.error(err);
-        // });
+        App.contracts.Candidate_data.deployed().then(function(instance) {
+            return instance.addCandidate(candidateName, candidateBranch, candidateGender, candidateEmail, candidateYear, candidateReg_no, candidateEvent, { from: App.account, value: 2000, gas: 6721975 });
+        }).then(function(result) {
+            // Wait for votes to update
+            console.log('pass');
+        }).catch(function(err) {
+            console.log(err);
+        });
 
-
-
-
-        // console.log(randomWords());
-        // console.log(randomWords({ wordsPerString: 15 }));
-
-        var prime_length = 60;
-        var diffHell = crypto.createDiffieHellman(prime_length);
-
-        diffHell.generateKeys('base64');
-        console.log("Public Key : ", diffHell.getPublicKey('base64'));
-        console.log("Private Key : ", diffHell.getPrivateKey('base64'));
-
-        console.log("Public Key : ", diffHell.getPublicKey('hex'));
-        console.log("Private Key : ", diffHell.getPrivateKey('hex'));
-
+    },
+    onVoterReg: function() {
+        voterName = $('#voter_name').val();
+        voteReg = $('#voter_reg').val();
+        voter_branch = $('#voterbranch')[0].value;
+        voteryear = $('#voteryear')[0].value;
+        voter_email = $('#voter_email')[0].value;
+        console.log(voterName + ' ' + voteReg + ' ' + voter_branch + ' ' + voter_email + ' ' + voteryear);
+        voter_key = this.randomString();
+        console.log(voter_key);
+        App.contracts.Candidate_data.deployed().then(function(instance) {
+            return instance.addVoter(true, voterName, voteReg, voter_branch, voteryear, voter_email, voter_key.toString(), { from: App.account, value: 2000, gas: 6721975 });
+        }).then(function(result) {
+            // Wait for votes to update
+            console.log('pass');
+        }).catch(function(err) {
+            console.log(err);
+        });
     },
 
     bindEvents: function() {

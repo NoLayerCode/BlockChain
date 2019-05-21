@@ -1,0 +1,6 @@
+Candidate_data.deployed().then(i=>{app = i;})
+
+app.Users(0)
+
+
+app.Candidates(0)

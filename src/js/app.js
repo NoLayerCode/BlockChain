@@ -83,12 +83,12 @@ App = {
 
         App.contracts.Candidate_data.deployed().then((instance) => {
             return instance.adminLogin.call(adminmail.toString(), adminpass.toString(), { from: App.account, value: 2000, gas: 6721975 });
-            // console.log(temp.toString());
-            // return temp;
         }).then(function(result) {
-            console.log(result.toString());
             if (result == 1) {
                 console.log("Admin logged in");
+                window.location = "../CandidReg.html";
+            } else if (result == 11) {
+                window.location = "../voterlogged.html";
             } else {
                 console.log("Invalid login details");
             }
@@ -180,7 +180,6 @@ App = {
     },
 
     onVoterReg: function() {
-
         voterName = $('#voter_name').val();
         voteReg = $('#voter_reg').val();
         voter_branch = $('#voterbranch')[0].value;

@@ -56,7 +56,7 @@ contract Candidate_data{
     mapping (uint =>Candidate_event) public candidate_event;
 
     uint public Candidate_count;
-    uint public voters_count ;
+    uint public voters_count;
     event votedEvent (
         uint indexed _candidateId
     );
@@ -67,9 +67,6 @@ contract Candidate_data{
         candidate_event[Candidate_count] = Candidate_event(Candidate_count, _event);
         Candidate_count ++;
     }
-    // function addCandidateOther() {
-    // }
-
     function addVoter(bool _hasvoted,string memory _votername, string memory _regno, string memory _voterbranch,
     string memory _voteryear,string memory _emailid, string memory _pubkey,string memory _pass) public payable{
 		Users[voters_count] = users(voters_count,_votername,_regno,_voterbranch,_voteryear,_emailid,_pass);
@@ -94,45 +91,37 @@ contract Candidate_data{
         emit votedEvent(_candidateId);
     }
 
-
-// These two functions are added 
-
-    function voter_login(string memory _emailid, string memory _password) public view returns(uint){
-        string memory mailid;
-        string memory word;
-        
-        for(uint i=0; i<=voters_count; i++){
-            mailid = Users[i].Emailid;
-            word= Users[i].password;    
-            if((keccak256(abi.encodePacked(mailid)) == keccak256(abi.encodePacked(_emailid))) && (keccak256(abi.encodePacked(word)) == keccak256(abi.encodePacked(_password)))){
-                //console.log("Login successful");
-                return 1;
-            }
-            else{
-                return 0;
-            }
-            // return mailid;
-        }
-    }
+    function show
 
 
     function adminLogin(string memory _username,string memory _keyword) public  payable returns (uint) {
         string memory mailid;
         string memory word;
-        for(uint i=0; i<=voters_count; i++) {
+        for(uint i = 0; i <= voters_count; i++){
             mailid = "g@g.com";
-            word= "gopi";
-            if((keccak256(abi.encodePacked(mailid)) == keccak256(abi.encodePacked(_username))) && (keccak256(abi.encodePacked(word)) == keccak256(abi.encodePacked(_keyword)))){
+            word = "gopi";
+            if((keccak256(abi.encodePacked(mailid)) == keccak256(abi.encodePacked(_username))
+            ) && (keccak256(abi.encodePacked(word)) == keccak256(abi.encodePacked(_keyword)))){
                 //console.log("Login successful");
                 return 1;
             }
             else{
-                return 0;
+                bool flag = false;
+                for(uint i = 0; i <= voters_count; i++){
+                    mailid = Users[i].Emailid;
+                    word = Users[i].password;
+                    if((keccak256(abi.encodePacked(mailid)) == keccak256(abi.encodePacked(_username))) && (keccak256(abi.encodePacked(word)) == keccak256(abi.encodePacked(_keyword)))){
+                        //console.log("Login successful");
+                        flag = true;
+                    }
+                }
+                if(flag == true){
+                    return 11;
+                }
+                else{
+                    return 0;
+                }
             }
-        }
+        } 
     }
-
-
-
-
 }

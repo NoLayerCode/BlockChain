@@ -1,6 +1,13 @@
 pragma solidity >=0.4.9 < 0.6.0;
 contract Candidate_data{
 
+ //Modified
+    struct Admin{
+        string username;
+        string password;
+    }
+
+    mapping (uint => Admin) public admin;
     struct Candidate {
         uint Id;
         string candidatename;
@@ -19,6 +26,7 @@ contract Candidate_data{
         string Branch;
         string Year;
         string Emailid;
+        string password;
     }
 
     struct users_rem{
@@ -31,6 +39,12 @@ contract Candidate_data{
         uint Id;
         string candidate_event;
     }
+
+    //Modified
+    mapping (address => users) public users_list;
+    mapping (address => users_rem) public users_rem_list;
+    mapping (address => Candidate) public Candidate_list;
+    mapping (address=>Candidate_event) public Candidate_event_list;
 
     mapping (uint => users) public Users;
     mapping (uint =>users_rem) public Users_rem;
@@ -57,8 +71,8 @@ contract Candidate_data{
     // }
 
     function addVoter(bool _hasvoted,string memory _votername, string memory _regno, string memory _voterbranch,
-    string memory _voteryear,string memory _emailid, string memory _pubkey) public payable{
-		Users[voters_count] = users(voters_count,_votername,_regno,_voterbranch,_voteryear,_emailid);
+    string memory _voteryear,string memory _emailid, string memory _pubkey,string memory _pass) public payable{
+		Users[voters_count] = users(voters_count,_votername,_regno,_voterbranch,_voteryear,_emailid,_pass);
         Users_rem[voters_count] = users_rem(voters_count, _hasvoted,_pubkey);
 		voters_count++;
 	}
@@ -79,4 +93,46 @@ contract Candidate_data{
         // trigger voted event
         emit votedEvent(_candidateId);
     }
+
+
+// These two functions are added 
+
+    function voter_login(string memory _emailid, string memory _password) public view returns(uint){
+        string memory mailid;
+        string memory word;
+        
+        for(uint i=0; i<=voters_count; i++){
+            mailid = Users[i].Emailid;
+            word= Users[i].password;    
+            if((keccak256(abi.encodePacked(mailid)) == keccak256(abi.encodePacked(_emailid))) && (keccak256(abi.encodePacked(word)) == keccak256(abi.encodePacked(_password)))){
+                //console.log("Login successful");
+                return 1;
+            }
+            else{
+                return 0;
+            }
+            // return mailid;
+        }
+    }
+
+
+    function adminLogin(string memory _username,string memory _keyword) public  payable returns (uint) {
+        string memory mailid;
+        string memory word;
+        for(uint i=0; i<=voters_count; i++) {
+            mailid = "g@g.com";
+            word= "gopi";
+            if((keccak256(abi.encodePacked(mailid)) == keccak256(abi.encodePacked(_username))) && (keccak256(abi.encodePacked(word)) == keccak256(abi.encodePacked(_keyword)))){
+                //console.log("Login successful");
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }
+    }
+
+
+
+
 }

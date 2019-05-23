@@ -28,30 +28,15 @@ App = {
     },
 
     initContract: function() {
-        $.getJSON("Candidate_data.json", function(candidate) {
+        $.getJSON("Candidate_data.json", function(candidate_json) {
             // console.log(candidate)
-            App.contracts.Candidate_data = TruffleContract(candidate);
+            App.contracts.Candidate_data = TruffleContract(candidate_json);
             App.contracts.Candidate_data.setProvider(App.web3Provider);
             return App.render();
         });
         // return App.bindEvents();
     },
 
-    render: function() {
-        var candidateInstance;
-
-        // console.log("account: " + App.accounts_address)
-        web3.eth.getCoinbase(function(err, account) {
-            if (err == null) {
-                App.account = account;
-                // account = App.accounts_address;
-                $("#accountAddress").html("Your account: " + account);
-
-                // loader.hide();
-                // content.show();
-            }
-        });
-    },
 
     randomString: function() {
         var result;
@@ -76,10 +61,50 @@ App = {
       });
     },*/
 
+    showCandidate: function() {
+        var candidateInstance;
+
+        App.contracts.Candidate_data.deployed().then(function(instance) {
+            candidateInstance = instance;
+            return candidateInstance.Candidate_count();
+        }).then(function(Candidate_count) {
+            var candidateOption;
+            candidatesSelect = $('#candidatesSelect');
+            for (var i = 0; i < Candidate_count; i++) {
+                // console.log("inside for");
+                candidateInstance.Candidates(i).then(function(candidate) {
+                    name = candidate[1];
+                    id = candidate[6];
+                    candidateOption = "<option value='" + id + "' >" + name + " | " + id + "</option> ";
+                    candidatesSelect.append(candidateOption);
+                    document.getElementById("load_Button").disabled = true;
+                    // document.getElementById("candidatesSelect").innerHTML = candidateOption;
+                });
+            }
+            console.log(candidateOption);
+
+            // change this
+            return candidateInstance.Candidate_list(App.account);
+        }).then(function(hasVoted) {
+
+        }).catch(function(err) {
+            console.log(err);
+        });
+    },
+
+    render: function() {
+        // Load account data
+        web3.eth.getCoinbase(function(err, account) {
+            if (err === null) {
+                App.account = account;
+                $("#accountAddress").html("Your Account: " + account);
+            }
+        });
+    },
+
     onAdminLogin: function() {
         adminmail = $('#adminemail').val();
         adminpass = $('#adminpassword').val();
-        temp = "asd";
 
         App.contracts.Candidate_data.deployed().then((instance) => {
             return instance.adminLogin.call(adminmail.toString(), adminpass.toString(), { from: App.account, value: 2000, gas: 6721975 });
@@ -146,10 +171,6 @@ App = {
 
     },
 
-
-
-
-
     onCandidateLogin: function() {
         // alert("hey");
 
@@ -214,13 +235,9 @@ App = {
 
     },
 
-
-
     bindEvents: function() {
         $(document).on('click', '.btn-adopt', App.handleAdopt);
     },
-
-    // init()
 
 };
 

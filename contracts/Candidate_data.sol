@@ -91,13 +91,38 @@ contract Candidate_data{
         emit votedEvent(_candidateId);
     }
 
-    function show
+    // function showCandidate() public payable returns(string memory name, string memory reg_no, string memory voting_event) {
+    //     for(uint i = 0; i <= voters_count; i++){
+    //         if((keccak256(abi.encodePacked(mailid)) == keccak256(abi.encodePacked(_username))
+    //         ) && (keccak256(abi.encodePacked(word)) == keccak256(abi.encodePacked(_keyword)))){
+    //             //console.log("Login successful");
+    //             return 1;
+    //         }
+    //         else{
+    //             bool flag = false;
+    //             for(uint i = 0; i <= voters_count; i++){
+    //                 mailid = Users[i].Emailid;
+    //                 word = Users[i].password;
+    //                 if((keccak256(abi.encodePacked(mailid)) == keccak256(abi.encodePacked(_username))) && (keccak256(abi.encodePacked(word)) == keccak256(abi.encodePacked(_keyword)))){
+    //                     //console.log("Login successful");
+    //                     flag = true;
+    //                 }
+    //             }
+    //             if(flag == true){
+    //                 return 11;
+    //             }
+    //             else{
+    //                 return 0;
+    //             }
+    //         }
+    //     }
+    // }
 
 
-    function adminLogin(string memory _username,string memory _keyword) public  payable returns (uint) {
+    function adminLogin(string memory _username,string memory _keyword) public payable returns (uint) {
         string memory mailid;
         string memory word;
-        for(uint i = 0; i <= voters_count; i++){
+        // for(uint i = 0; i <= voters_count; i++){
             mailid = "g@g.com";
             word = "gopi";
             if((keccak256(abi.encodePacked(mailid)) == keccak256(abi.encodePacked(_username))
@@ -107,9 +132,9 @@ contract Candidate_data{
             }
             else{
                 bool flag = false;
-                for(uint i = 0; i <= voters_count; i++){
-                    mailid = Users[i].Emailid;
-                    word = Users[i].password;
+                for(uint j = 0; j <= voters_count; j++){
+                    mailid = Users[j].Emailid;
+                    word = Users[j].password;
                     if((keccak256(abi.encodePacked(mailid)) == keccak256(abi.encodePacked(_username))) && (keccak256(abi.encodePacked(word)) == keccak256(abi.encodePacked(_keyword)))){
                         //console.log("Login successful");
                         flag = true;
@@ -122,6 +147,6 @@ contract Candidate_data{
                     return 0;
                 }
             }
-        } 
+        // }
     }
 }

@@ -71,22 +71,22 @@ App = {
             var candidateOption;
             candidatesSelect = $('#candidatesSelect');
             for (var i = 0; i < Candidate_count; i++) {
-                // console.log("inside for");
                 candidateInstance.Candidates(i).then(function(candidate) {
                     name = candidate[1];
                     id = candidate[6];
                     candidateOption = "<option value='" + id + "' >" + name + " | " + id + "</option> ";
                     candidatesSelect.append(candidateOption);
                     document.getElementById("load_Button").disabled = true;
-                    // document.getElementById("candidatesSelect").innerHTML = candidateOption;
                 });
             }
             console.log(candidateOption);
-
-            // change this
             return candidateInstance.Candidate_list(App.account);
         }).then(function(hasVoted) {
-
+            // if (hasVoted) {
+            //     $('form').hide();
+            // }
+            // loader.hide();
+            // content.show();
         }).catch(function(err) {
             console.log(err);
         });

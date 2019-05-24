@@ -90,12 +90,11 @@ contract Candidate_data{
     //     // trigger voted event
     //     emit votedEvent(_candidateId);
     // }
-    function addVote(string memory _key,string memory _regNo) public payable returns (uint) {
-        // return "1";
+    function addVote(string memory _key,string memory _regNo, string memory _voter_regNo) public payable returns (uint) {
         uint i;
+        //Add Voter get info;
         string memory voter_key;
         voter_key = Users_rem[0].key;
-        // uint resu
         bool flag = false;
         string memory candidate_regID;
         if(keccak256(abi.encodePacked(_key)) == keccak256(abi.encodePacked(voter_key))){

@@ -46,7 +46,7 @@
             <div class="container">
                 <h2>Vote Here</h2>
                 <hr>
-                <div id="exTab3" class="container">
+                <!-- <div id="exTab3" class="container">
                     <ul class="nav nav-pills">
                         <li class="active">
                             <a href="#1b" data-toggle="tab">Cultural Secretay</a>
@@ -57,11 +57,15 @@
                         </li>
                     </ul>
                     <hr>
-                </div>
+                </div> -->
                 <div class="col-md-6">
                     <form>
                         <button type="button" onclick="App.showCandidate(); return false;" id="load_Button" class="btn btn-danger">Load</button>
+                        <hr/>
                         <div>
+                            <label for="RegId">Enter Reg No</label>
+                            <input type="text" id="voterId_welcome" style="margin-bottom: 5px;" class="form-control" name="voterId" placeholder="Reg No" required="" autofocus="" />
+                            <br>
                             <label for="candidatesSelect">Select Candidate</label>
                             <select class="form-control" id="candidatesSelect">
                                 <option value="none">Select Candidate</option>
@@ -69,13 +73,16 @@
                         </div>
                         <!-- <label id="demo"></label> -->
                         <hr>
+                        <div>
+
+                        </div>
                         <div class="form-group">
                             <label for="private">Private-Key</label>
                             <!-- <hr> -->
                             <textarea class="form-control" rows="6" id="private_key"></textarea>
                         </div>
                         <!-- <hr> -->
-                        <button onclick="App.addVoteJS(); return false;" type="button" id="vote_Button" class="btn btn-danger">Vote</button>
+                        <button onclick="App.addViewResult(); return false;" type="button" id="vote_Button" class="btn btn-danger">Vote</button>
                     </form>
                 </div>
             </div>

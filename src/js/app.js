@@ -61,19 +61,20 @@ App = {
       });
     },*/
 
-    addVoteJS: function() {
+    addViewResult: function() {
         var candidateInstance;
         candidateSelected = $('#candidatesSelect').val();
+        voterId = $('#voterId_welcome').val();
         voterKey = $('#private_key').val();
         // console.log(voterKey);
         console.log(candidateSelected);
         App.contracts.Candidate_data.deployed().then(function(instance) {
-            return instance.addVote(voterKey.toString(), candidateSelected.toString(), { from: App.account, value: 2000, gas: 6721975 });
+            return instance.addVote(voterKey.toString(), candidateSelected.toString(), voterKey, { from: App.account, value: 2000, gas: 6721975 });
             // return 
         }).then(function(result) {
             console.log("result ", result);
             console.log("result  number ", result.toString());
-            if (result == "1,") {
+            if (result == true) {
                 console.log("voted");
             } else if (result == "0,") {
                 console.log("0");
@@ -217,11 +218,11 @@ App = {
             return instance.addCandidate(candidateName, candidateBranch, candidateGender, candidateEmail, candidateYear, candidateReg_no, candidateEvent, { from: App.account, value: 2000, gas: 6721975 });
         }).then(function(result) {
             // Wait for votes to update
+
             console.log('pass');
         }).catch(function(err) {
             console.log(err);
         });
-
     },
 
     onVoterReg: function() {
@@ -238,10 +239,67 @@ App = {
             return instance.addVoter(false, voterName, voteReg, voter_branch, voteryear, voter_email, voter_key.toString(), voter_pass.toString(), { from: App.account, value: 2000, gas: 6721975 });
         }).then(function(result) {
             // Wait for votes to update
+            message = "This is your key : " + voter_key;
+            var data = {
+                service_id: "mailjet",
+                template_id: "template_uzbxjNzS",
+                user_id: "user_UPFGXweoJeKEn0ReUbo4W",
+                template_params: {
+                    // username: "James",
+                    // g - recaptcha - response: "03AHJ_ASjnLA214KSNKFJAK12sfKASfehbmfd...",
+                    to: voter_email,
+                    subject: "E-voting Key",
+                    message_html: message
+                }
+            }
+            $.ajax('https://api.emailjs.com/api/v1.0/email/send', {
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json'
+            }).done(function() {
+                alert('Your mail is sent!');
+            }).fail(function(error) {
+                alert('Oops... ' + JSON.stringify(error));
+            });
             console.log('pass');
         }).catch(function(err) {
             console.log(err);
         });
+    },
+
+    getResultPie: function() {
+        var electionInstance;
+
+        // var result, name, count;
+        App.contracts.Candidate_data.deployed().then(function(instance) {
+            electionInstance = instance;
+            return electionInstance.Candidate_count();
+        }).then(function(candidatesCount) {
+            candidatesResults = $('#candidatesResults')
+            for (var i = 0; i < candidatesCount; i++) {
+                electionInstance.Candidates(i).then(function(candidate) {
+                    var id = candidate[6];
+                    var name = candidate[1];
+                    var voteCount = candidate[7];
+
+                    // Render candidate Result
+                    var candidateTemplate = "<tr><td>" + id + "</td><td>" + name + "</td><td>" + voteCount + "</td></tr>"
+                    candidatesResults.append(candidateTemplate);
+
+                });
+            }
+            document.getElementById("display_result").disabled = true;
+            return candidateInstance.Candidate_list(App.account);
+        }).then(function(hasVoted) {
+            // if (hasVoted) {
+            //     $('form').hide();
+            // }
+            // loader.hide();
+            // content.show();
+        }).catch(function(err) {
+            console.log(err);
+        });
+
     },
 
     onCastVote: function() {

@@ -40,7 +40,7 @@ App = {
 
     randomString: function() {
         var result;
-        var length = 200;
+        var length = 50;
         var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
         for (var i = length; i > 0; --i)
@@ -60,6 +60,30 @@ App = {
         return instance.
       });
     },*/
+
+    addVoteJS: function() {
+        var candidateInstance;
+        candidateSelected = $('#candidatesSelect').val();
+        voterKey = $('#private_key').val();
+        // console.log(voterKey);
+        console.log(candidateSelected);
+        App.contracts.Candidate_data.deployed().then(function(instance) {
+            return instance.addVote(voterKey.toString(), candidateSelected.toString(), { from: App.account, value: 2000, gas: 6721975 });
+            // return 
+        }).then(function(result) {
+            console.log("result ", result);
+            console.log("result  number ", result.toString());
+            if (result == "1,") {
+                console.log("voted");
+            } else if (result == "0,") {
+                console.log("0");
+            } else {
+                console.log("Invalid");
+            }
+        }).catch(function(err) {
+            console.log(err);
+        });
+    },
 
     showCandidate: function() {
         var candidateInstance;
@@ -210,8 +234,8 @@ App = {
         console.log(voterName + ' ' + voteReg + ' ' + voter_branch + ' ' + voter_email + ' ' + voteryear + ' ' + voter_pass);
         voter_key = this.randomString();
         console.log(voter_key);
-        App.contracts.Candidate_data.deployed().then(function(instance) {
-            return instance.addVoter(true, voterName, voteReg, voter_branch, voteryear, voter_email, voter_key.toString(), voter_pass.toString(), { from: App.account, value: 2000, gas: 6721975 });
+        App.contracts.Candidate_data.deployed().then(function(instance) { //voter_key.toString()
+            return instance.addVoter(false, voterName, voteReg, voter_branch, voteryear, voter_email, voter_key.toString(), voter_pass.toString(), { from: App.account, value: 2000, gas: 6721975 });
         }).then(function(result) {
             // Wait for votes to update
             console.log('pass');

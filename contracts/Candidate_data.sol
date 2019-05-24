@@ -74,49 +74,47 @@ contract Candidate_data{
 		voters_count++;
 	}
 
-    function vote (uint _candidateId) public {
-        // require that they haven't voted before
-        require(!voters[msg.sender],"check voting done?");
+    // function vote (uint _candidateId) public {
+    //     // require that they haven't voted before
+    //     require(!voters[msg.sender],"check voting done?");
 
-        // require a valid candidate
-        require(_candidateId > 0 && _candidateId <= Candidate_count, "validate candidate_id");
+    //     // require a valid candidateUsers_rem
+    //     require(_candidateId > 0 && _candidateId <= Candidate_count, "validate candidate_id");
 
-        // record that voter has voted
-        voters[msg.sender] = true;
+    //     // record that voter has voted
+    //     voters[msg.sender] = true;
 
-        // update candidate vote Count
-        Candidates[_candidateId].vote_count++;
+    //     // update candidate vote Count
+    //     Candidates[_candidateId].vote_count++;
 
-        // trigger voted event
-        emit votedEvent(_candidateId);
-    }
-
-    // function showCandidate() public payable returns(string memory name, string memory reg_no, string memory voting_event) {
-    //     for(uint i = 0; i <= voters_count; i++){
-    //         if((keccak256(abi.encodePacked(mailid)) == keccak256(abi.encodePacked(_username))
-    //         ) && (keccak256(abi.encodePacked(word)) == keccak256(abi.encodePacked(_keyword)))){
-    //             //console.log("Login successful");
-    //             return 1;
-    //         }
-    //         else{
-    //             bool flag = false;
-    //             for(uint i = 0; i <= voters_count; i++){
-    //                 mailid = Users[i].Emailid;
-    //                 word = Users[i].password;
-    //                 if((keccak256(abi.encodePacked(mailid)) == keccak256(abi.encodePacked(_username))) && (keccak256(abi.encodePacked(word)) == keccak256(abi.encodePacked(_keyword)))){
-    //                     //console.log("Login successful");
-    //                     flag = true;
-    //                 }
-    //             }
-    //             if(flag == true){
-    //                 return 11;
-    //             }
-    //             else{
-    //                 return 0;
-    //             }
-    //         }
-    //     }
+    //     // trigger voted event
+    //     emit votedEvent(_candidateId);
     // }
+    function addVote(string memory _key,string memory _regNo) public payable returns (uint) {
+        // return "1";
+        uint i;
+        string memory voter_key;
+        voter_key = Users_rem[0].key;
+        // uint resu
+        bool flag = false;
+        string memory candidate_regID;
+        if(keccak256(abi.encodePacked(_key)) == keccak256(abi.encodePacked(voter_key))){
+            for( i = 0; i < Candidate_count; i++){
+                candidate_regID = Candidates[i].reg_id;
+                if(keccak256(abi.encodePacked(candidate_regID)) == keccak256(abi.encodePacked(_regNo))){
+                    flag = true;
+                    Candidates[i].vote_count ++;
+                    Users_rem[0].has_voted = true;
+                    break;
+                }
+            }
+            if(flag == true){
+                return 1;
+            }else {
+                return 0;
+            }
+        }
+    }
 
 
     function adminLogin(string memory _username,string memory _keyword) public payable returns (uint) {
@@ -149,4 +147,7 @@ contract Candidate_data{
             }
         // }
     }
+
+
+
 }

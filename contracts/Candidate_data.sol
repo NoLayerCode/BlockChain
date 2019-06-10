@@ -68,10 +68,27 @@ contract Candidate_data{
         Candidate_count ++;
     }
     function addVoter(bool _hasvoted,string memory _votername, string memory _regno, string memory _voterbranch,
-    string memory _voteryear,string memory _emailid, string memory _pubkey,string memory _pass) public payable{
-		Users[voters_count] = users(voters_count,_votername,_regno,_voterbranch,_voteryear,_emailid,_pass);
-        Users_rem[voters_count] = users_rem(voters_count, _hasvoted,_pubkey);
-		voters_count++;
+    string memory _voteryear,string memory _emailid, string memory _pubkey,string memory _pass) public payable returns (uint){
+        uint i;
+        bool flag = false;
+        for(i = 0;i < voters_count; i++){
+            string memory temp;
+            temp = Users[i].Regno;
+            if(keccak256(abi.encodePacked(temp)) == keccak256(abi.encodePacked(_regno))){
+                flag = true;
+                break;
+            }
+        }
+
+        if(flag == true){
+            return 1;
+        }
+        else{
+            Users[voters_count] = users(voters_count,_votername,_regno,_voterbranch,_voteryear,_emailid,_pass);
+            Users_rem[voters_count] = users_rem(voters_count, _hasvoted,_pubkey);
+            voters_count++;
+            return 0;
+        }
 	}
 
     // function vote (uint _candidateId) public {
@@ -91,29 +108,41 @@ contract Candidate_data{
     //     emit votedEvent(_candidateId);
     // }
     function addVote(string memory _key,string memory _regNo, string memory _voter_regNo) public payable returns (uint) {
+        uint j;
         uint i;
         //Add Voter get info;
         string memory voter_key;
-        voter_key = Users_rem[0].key;
+        string memory voter_reg;
+        // voter_key = Users_rem[0].key;
         bool flag = false;
         string memory candidate_regID;
-        if(keccak256(abi.encodePacked(_key)) == keccak256(abi.encodePacked(voter_key))){
-            for( i = 0; i < Candidate_count; i++){
-                candidate_regID = Candidates[i].reg_id;
-                if(keccak256(abi.encodePacked(candidate_regID)) == keccak256(abi.encodePacked(_regNo))){
-                    flag = true;
-                    Candidates[i].vote_count ++;
-                    Users_rem[0].has_voted = true;
-                    break;
-                }
-            }
-            if(flag == true){
-                return 1;
-            }else {
-                return 0;
+        for(j = 0; j < voters_count; j++){
+            voter_reg = Users[j].Regno;
+            if(keccak256(abi.encodePacked(voter_reg)) == keccak256(abi.encodePacked(_voter_regNo))){
+                voter_key = Users_rem[j].key;
+                break;
             }
         }
-    }
+        // for(i = 0; i < voters_count; i++){
+        if(keccak256(abi.encodePacked(_key)) == keccak256(abi.encodePacked(voter_key))){
+                for( i = 0; i < Candidate_count; i++){
+                    candidate_regID = Candidates[i].reg_id;
+                    if(keccak256(abi.encodePacked(candidate_regID)) == keccak256(abi.encodePacked(_regNo))){
+                        flag = true;
+                        Candidates[i].vote_count++;
+                        Users_rem[0].has_voted = true;
+                        break;
+                    }
+                }
+                if(flag == true){
+                    return 1;
+                }else {
+                    return 0;
+                }
+            }
+            // }
+        }
+
 
 
     function adminLogin(string memory _username,string memory _keyword) public payable returns (uint) {

@@ -69,7 +69,7 @@ App = {
         // console.log(voterKey);
         console.log(candidateSelected);
         App.contracts.Candidate_data.deployed().then(function(instance) {
-            return instance.addVote(voterKey.toString(), candidateSelected.toString(), voterKey, { from: App.account, value: 2000, gas: 6721975 });
+            return instance.addVote(voterKey.toString(), candidateSelected.toString(), voterId, { from: App.account, value: 4000, gas: 6721975 });
             // return 
         }).then(function(result) {
             console.log("result ", result);
@@ -81,6 +81,7 @@ App = {
             } else {
                 console.log("Invalid");
             }
+            window.location = "index.html";
         }).catch(function(err) {
             console.log(err);
         });
@@ -220,6 +221,8 @@ App = {
             // Wait for votes to update
 
             console.log('pass');
+            alert("Candidate Registered successfully");
+            // window.location = "index.html";
         }).catch(function(err) {
             console.log(err);
         });
@@ -238,30 +241,30 @@ App = {
         App.contracts.Candidate_data.deployed().then(function(instance) { //voter_key.toString()
             return instance.addVoter(false, voterName, voteReg, voter_branch, voteryear, voter_email, voter_key.toString(), voter_pass.toString(), { from: App.account, value: 2000, gas: 6721975 });
         }).then(function(result) {
-            // Wait for votes to update
             message = "This is your key : " + voter_key;
-            var data = {
+            data = {
                 service_id: "mailjet",
                 template_id: "template_uzbxjNzS",
                 user_id: "user_UPFGXweoJeKEn0ReUbo4W",
                 template_params: {
-                    // username: "James",
-                    // g - recaptcha - response: "03AHJ_ASjnLA214KSNKFJAK12sfKASfehbmfd...",
                     to: voter_email,
                     subject: "E-voting Key",
-                    message_html: message
+                    message_html: message,
                 }
-            }
+            };
             $.ajax('https://api.emailjs.com/api/v1.0/email/send', {
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json'
             }).done(function() {
                 alert('Your mail is sent!');
+                // window.location = "voterlogged.html";
             }).fail(function(error) {
-                alert('Oops... ' + JSON.stringify(error));
+                console.log('Oops... ' + JSON.stringify(error));
             });
             console.log('pass');
+            alert("Voter Registered successfully");
+            window.location = "voterlogged.html";
         }).catch(function(err) {
             console.log(err);
         });
@@ -289,7 +292,9 @@ App = {
                 });
             }
             document.getElementById("display_result").disabled = true;
+
             return candidateInstance.Candidate_list(App.account);
+
         }).then(function(hasVoted) {
             // if (hasVoted) {
             //     $('form').hide();
@@ -314,6 +319,7 @@ App = {
         }).catch(function(err) {
             console.error(err);
         });
+        window.location = "index.html";
 
     },
 
